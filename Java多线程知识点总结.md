@@ -167,7 +167,7 @@ RejectedExecutionHandler:饱和策略
 
 4、        DiscardPolicy:不处理，丢弃掉。
 
-Executor框架类图![图片 6](/Users/alisa/Desktop/图片 6.png) 
+Executor框架类图![图片 6](https://ws3.sinaimg.cn/large/006tKfTcgy1fq5fbhra0mj30l20sr400.jpg) 
 
 Executor接口是异步任务执行框架的基础，该框架能够支持多种不同类型的任务执行策略。
 
@@ -269,13 +269,13 @@ public static ExecutorService newCachedThreadPool() {
 
 <https://blog.csdn.net/yanyan19880509/article/details/52345422>
 
-ReenTrantLock支持两种获取锁的方式，一种是公平模式，一种是非公平模式。先说公平锁模式：初始化时，state=0，表示无人抢占资源，这时候A线程请求锁，state+1，如图所示：![图片 15](/Users/alisa/Desktop/图片 15.png) 
+ReenTrantLock支持两种获取锁的方式，一种是公平模式，一种是非公平模式。先说公平锁模式：初始化时，state=0，表示无人抢占资源，这时候A线程请求锁，state+1，如图所示：![图片 15](https://ws1.sinaimg.cn/large/006tKfTcgy1fq5fbgqjbpj30nz0ff74w.jpg) 
 
-线程A取得了锁，把state原子性+1，这时候state被改为1，A线程继续执行其他任务，然后线程B请求锁，线程B无法获取锁，生成节点进行排队，如下图：![图片 16](/Users/alisa/Desktop/图片 16.png)
+线程A取得了锁，把state原子性+1，这时候state被改为1，A线程继续执行其他任务，然后线程B请求锁，线程B无法获取锁，生成节点进行排队，如下图：![图片 16](https://ws4.sinaimg.cn/large/006tKfTcgy1fq5fbfp2vlj30nz0b5q3l.jpg)
 
-这时候如果线程A又请求锁，是有特权的，只需修改状态，如下图：![图片 17](/Users/alisa/Desktop/图片 17.png)
+这时候如果线程A又请求锁，是有特权的，只需修改状态，如下图：![图片 17](https://ws4.sinaimg.cn/large/006tKfTcgy1fq5fbimg12j30nz0cwdgj.jpg)
 
-这就是可重入锁，就是一个线程在获取了锁之后，再次去获取了同一个锁，这时候仅仅把状态值进行累加，那如果线程A释放了一次锁，就如下图所示：![图片 18](/Users/alisa/Desktop/图片 18.png)
+这就是可重入锁，就是一个线程在获取了锁之后，再次去获取了同一个锁，这时候仅仅把状态值进行累加，那如果线程A释放了一次锁，就如下图所示：![图片 18](https://ws4.sinaimg.cn/large/006tKfTcgy1fq5fbjk0sgj30nz0b7gm8.jpg)
 
 仅仅是把状态值减了，只有线程A把此锁全部释放了，状态值减到0了，其他线程才有机会获取锁。当A把锁完全释放后，state恢复为0，然后会通知队列唤醒B线程节点，使B可以再次竞争锁。当然，如果B线程后面还有C线程，C线程继续休眠，除非B执行完了，通知C线程。注意，当一个线程节点被唤醒然后取得了锁，对应节点会从队列中删除。
 

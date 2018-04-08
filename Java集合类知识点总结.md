@@ -2,7 +2,7 @@
 
 Java的集合类都放到了java.util包下，层次关系如下图：
 
-![图片 10](/Users/alisa/Desktop/图片 10.png)
+![图片 10](https://ws1.sinaimg.cn/large/006tKfTcgy1fq5fe82ipaj30o10lptbs.jpg)
 
 1、Collection接口是集合类的根接口，Collection接口又继承Iterable类，都实现了Iterator接口，这是一个用于遍历集合中元素的接口，主要包含以下三种方法：
 
@@ -18,7 +18,7 @@ Collection接口没有直接的实现类，被Set、List、Queue继承，其中S
 
  每个ArrayList实例都有一个容量（ArrayList默认容量是10），该容量是指用来存储列表元素的数组的大小。它总是至少等于列表的大小。随着向ArrayList中不断添加元素，其容量也自动增长。由下图可看出自动增长会带来数据向新数组的重新拷贝。每次数组容量增长大约是其容量的1.5倍，因此这种操作的代价很高，我们应尽量避免数组容量的扩充，当可预知时最好提前指定数据大小。ArrayList的最大容量是Java的MAX_VALUE -8(当前容量没超过该值是)/MAX_VALUE(当前容量已超过MAX_VALUE -8时),此实现是不同步的。
 
-![图片 11](/Users/alisa/Desktop/图片 11.png)
+![图片 11](https://ws3.sinaimg.cn/large/006tKfTcgy1fq5fe69ei5j30o1090abq.jpg)
 
 **LinkedList实现原理：**
 
@@ -32,7 +32,7 @@ LinkedList是一个继承于AbstractSequentiaList的双向链表，它可以被�
 
 HashMap是基于哈希表的Map接口的非同步实现，此类不保证映射的顺序。HashMap实际上是一个“链表散列”的数据结构，即数组和链表的结合体，HashMap的默认容量是16。HashMap的存储实现：先根据key的hashCode重新计算hash值，根据hash值得到这个元素在数组中的位置（即下标），如果数组该位置上已经存放有其他元素了，那么在这个位置上的元素将以链表的形式存放，新加入的放在链头，最先加入的放在链尾。如果数组该位置上没有元素，就直接将该元素放到此数组中的该位置上。 当HashMap中的元素越来越多的时候，hash冲突的几率也就越来越高，因为数组的长度是固定的。所以为了提高查询的效率，就要对HashMap的数组进行扩容，数组扩容这个操作也会出现在ArrayList中，这是一个常用的操作，而在HashMap数组扩容之后，最消耗性能的点就出现了：原数组中的数据必须重新计算其在新数组中的位置，并放进去，这就是resize。那么HashMap什么时候进行扩容呢？当HashMap中的元素个数超过数组大小*loadFactor时，就会进行数组扩容，loadFactor的默认值为0.75，这是一个折中的取值。负载因子衡量的是一个散列表的空间的使用程度，负载因子越大表示散列表的装填程度越高，反之愈小。因此如果负载因子越大，对空间的利用更充分，然而后果是查找效率的降低；如果负载因子太小，那么散列表的数据将过于稀疏，对空间造成严重浪费。jdk1.8之前的hashmap都采用上图的结构，都是基于一个数组和多个单链表，hash值冲突的时候，就将对应节点以链表的形式存储。如果在一个链表中查找其中一个节点时，将会花费O（n）的查找时间，会有很大的性能损失。到了jdk1.8，当同一个hash值的节点数小于8时，采用单链表形式存储，大于8时采用红黑树，当已采用红黑树时，删减到6个时又继续采用单链表形式存储。如下图所示：
 
-![图片 13](/Users/alisa/Desktop/图片 13.png)
+![图片 13](https://ws4.sinaimg.cn/large/006tKfTcgy1fq5fe4bt13j30ld0ojabf.jpg)
 
 采用了Fail-Fast机制，通过一个modCount值记录修改次数，对HashMap内容的修改都将增加这个值。迭代器初始化过程中会将这个值赋给迭代器的expectedModCount，在迭代过程中，判断modCount跟expectedModCount是否相等，如果不相等就表示已经有其他线程修改了Map，马上抛出异常。
 
@@ -45,7 +45,7 @@ R-B Tree，全称是Red-Black Tree，又称为“红黑树”，它一种特殊�
 （4）如果一个节点是红色的，则它的子节点必须是黑色的。
 （5）从一个节点到该节点的子孙节点的所有路径上包含相同数目的黑节点。
 
-![图片 12](/Users/alisa/Desktop/图片 12.png)
+![图片 12](https://ws2.sinaimg.cn/large/006tKfTcgy1fq5fe8ybugj30o10bpwfv.jpg)
 
 **Hashtable的实现原理：**
 
@@ -55,7 +55,7 @@ Hashtable是基于哈希表的Map接口的同步实现的，这意味着它是�
 
  ConcurrentHashMap最重要的一个概念就是分段锁Segment，同HashMap一样，Segment包含一个HashEntry数组，数组中的每一个HashEntry既是一个键值对，也是一个链表的头节点。在ConcurrentHashMap集合中有2的N次方个Segment，共同保存在一个名为segments的数组中，整个ConcurrentHashMap结构如下：
 
-![屏幕快照 2018-04-02 下午4.57.22](/Users/alisa/Desktop/屏幕快照 2018-04-02 下午4.57.22.png)
+![屏幕快照 2018-04-02 下午4.57.22](https://ws3.sinaimg.cn/large/006tKfTcgy1fq5fe74e27j31480nsgoe.jpg)
 
 可以说，ConcurrentHashMap是一个二级哈希表。在一个总的哈希表下面有若干个子哈希表。这样的优势就是每一个Segment就好比一个自治区，读写操作高度自治，Segment之间互不影响。不同的Segment的写入是可以并发执行的，同一个Segment的读写是可以并发执行的，Segment的写入是需要上锁的，因此对同一个Segment的并发写入会被阻塞。由此可见，ConcurrentHashMap当中每个Segment各自持有一把锁，在保证线程安全的同时降低锁的粒度，让并发操作效率更高。
 
@@ -113,7 +113,7 @@ LinkedHashMap继承与HashMap，底层使用哈希表与双向链表来保存所
 
 TreeMap是一个二叉树的数据结构，不允许出现相同的键，从下图代码可看出，有一个泛型对象实体Entry，Entry里面维持一个左、右子树跟父树的对象属性。如下图所示：
 
-![图片 14](/Users/alisa/Desktop/图片 14.png)
+![图片 14](https://ws1.sinaimg.cn/large/006tKfTcgy1fq5fe59gr2j30mh0t6gog.jpg)
 
 
 
